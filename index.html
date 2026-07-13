@@ -1,0 +1,1191 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>蓝牙水控</title>
+  <style>
+﻿:root{--background-body:#fafafa;--background:#efefef;--background-alt:#fff;--text-main:#363636;--text-muted:#70777f;--button-base:#d0cfcf;--button-hover:#9b9b9b;--border:#dbdbdb;--focus:rgba(0,150,191,.67);--ok:#16794c;--warn:#9a6700;--danger:#b42318;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}*{box-sizing:border-box}html{scrollbar-color:#aaa var(--background-body);scrollbar-width:thin}body{min-height:100dvh;margin:0;background:var(--background-body);color:var(--text-main);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue","Noto Sans SC",sans-serif;line-height:1.4;text-rendering:optimizeLegibility}.main{min-height:calc(100dvh - 86px);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px 10px 118px;text-align:center}.main-button,button{cursor:pointer;color:#1d1d1d;background:var(--button-base);font:inherit;border:0;border-radius:6px;outline:0;transition:background-color .1s linear,box-shadow .1s linear,transform .1s ease}.main-controls{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}.main-button{min-width:132px;margin:0;padding:10px 34px;font-size:16px}.main-button:hover,button:hover{background:var(--button-hover)}.main-button:focus,button:focus{box-shadow:0 0 0 2px var(--focus)}.main-button:active,button:active{transform:translateY(2px)}button:disabled{cursor:not-allowed;opacity:.5;transform:none}.status{min-height:22px;margin:10px 0 0;color:var(--text-muted);font-size:14px}.result{min-height:22px;margin:2px 0 0;color:var(--text-muted);font-size:13px}.quick-actions{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px}.text-button{padding:5px 10px;color:var(--text-muted);background:transparent;font-size:13px}.text-button:hover{background:var(--background)}.misc{position:fixed;left:10px;right:10px;bottom:10px;max-width:800px;margin:0 auto;color:var(--text-muted);font-size:12px}.misc-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.support{white-space:nowrap}.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}details{margin-top:8px}summary{display:inline-block;cursor:pointer;color:var(--text-muted);user-select:none;padding:8px 18px;background:var(--button-base);border-radius:6px;color:#1d1d1d;font-size:15px;line-height:1.2}summary:hover{background:var(--button-hover)}.advanced-panel{display:grid;gap:12px;max-height:58vh;overflow:auto;margin-top:8px;padding:12px;background:var(--background-alt);border:1px solid var(--border);border-radius:6px;text-align:left;box-shadow:0 6px 24px rgba(0,0,0,.06)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{padding:8px 16px}.danger{color:var(--danger)}label{display:block;margin:0 0 4px;color:var(--text-muted);font-size:12px}input,textarea,select{width:100%;min-width:0;color:#1d1d1d;background:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 9px;font:inherit;font-size:13px}textarea{min-height:88px;font-family:var(--mono);font-size:12px;resize:vertical}.switch{display:flex;align-items:center;gap:8px;color:var(--text-main);font-size:13px}.switch input{width:auto}.kv{display:grid;grid-template-columns:72px minmax(0,1fr);gap:6px 10px;font-size:12px}.kv div:nth-child(odd){color:var(--text-muted)}.kv div:nth-child(even){overflow-wrap:anywhere}.small{margin:0;color:var(--text-muted);font-size:12px;line-height:1.5}.log{height:150px;overflow:auto;background:#1d1d1d;color:#f2f2f2;border-radius:6px;padding:10px;font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre-wrap}code{font-family:var(--mono);background:var(--background);padding:2px 4px;border-radius:4px}.error-info{max-width:340px;margin:8px 0 0;color:var(--danger);font-size:13px;line-height:1.5}.unsupported-box{max-width:360px;margin:18px auto 0;padding:14px 16px;border:1px solid var(--border);border-radius:8px;background:var(--background-alt);text-align:center}.unsupported-box p{margin:0 0 8px;color:var(--text-main);font-size:15px;line-height:1.5}.unsupported-box a{color:#0969da;text-decoration:none}.mode-tag{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:999px;background:#e8f7ef;color:#16794c;font-size:12px}.device-card{max-width:360px;margin:12px auto 0;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--background-alt);text-align:left}.device-card .t{font-size:13px;color:var(--text-main);font-weight:600}.device-card .s{margin-top:4px;font-size:12px;color:var(--text-muted);word-break:break-all}.btn-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}.main-button.secondary{background:#ececec}.main-button.danger{background:#f3d2d0;color:#7a1f1a}body:has(details[open]) .main{opacity:0;pointer-events:none}@media(max-width:640px){.grid{grid-template-columns:1fr}.main{padding-bottom:140px}.misc-head{align-items:flex-start;flex-direction:column}.advanced-panel{max-height:62vh}}
+
+  </style>
+</head>
+<body>
+  <main class="main">
+    <noscript>需要启用 JavaScript。</noscript>
+    <div class="main-controls" style="margin-top:14px">
+      <button class="main-button" id="runBtn">开启</button>
+      <button class="main-button" id="closeMainBtn">关闭</button>
+    </div>
+    <p id="state" class="status pill">未连接</p>
+    <p id="resultInfo" class="result">点击开启选设备开闸</p>
+    <p id="errorInfo" class="error-info" hidden></p>
+    <div id="unsupportedBox" class="unsupported-box" hidden>
+      <p>需要支持蓝牙的浏览器，如 Chrome 或 Edge。</p>
+      <p class="sub"><a href="https://github.com/celesWuff/waterctl/blob/2.x/FAQ.md" target="_blank" rel="noopener noreferrer">查看支持列表</a></p>
+    </div>
+    <!-- compat hidden controls for advanced flows -->
+    <button id="searchBtn" hidden></button>
+    <button id="startBtn" hidden></button>
+    <button id="stopBtn" hidden></button>
+    <button id="queryBtn" hidden></button>
+    <button id="closeBtn" hidden></button>
+    <button id="pairBtn" hidden></button>
+    <button id="disconnectBtn" hidden></button>
+    <div id="deviceCard" class="device-card" hidden>
+      <div class="t" id="deviceTitle">未选择设备</div>
+      <div class="s" id="deviceMeta">-</div>
+    </div>
+    <div id="modeTag" hidden>免费用水</div>
+  </main>
+
+  <div class="misc">
+    <div class="misc-head">
+      <span id="support" class="support pill warn">检测 Web Bluetooth...</span>
+      <details>
+        <summary>高级</summary>
+        <div class="advanced-panel">
+          <div class="kv">
+            <div>模式</div><div id="modeInfo">免费用水（小程序 isFreeWater）</div>
+            <div>设备</div><div id="deviceInfo">未连接</div>
+            <div>MAC</div><div id="macInfo">-</div>
+            <div>最后指令</div><div id="lastCmdInfo">-</div>
+            <div>最后回包</div><div id="lastRxInfo">-</div>
+          </div>
+
+          <input type="hidden" id="serviceUuid" value="0000ff00-0000-1000-8000-00805f9b34fb" />
+          <input type="hidden" id="writeUuid" value="0000ff01-0000-1000-8000-00805f9b34fb" />
+          <input type="hidden" id="notifyUuid" value="0000ff02-0000-1000-8000-00805f9b34fb" />
+          <input type="hidden" id="altServiceUuid" value="0000ffe0-0000-1000-8000-00805f9b34fb" />
+          <input type="hidden" id="altWriteUuid" value="0000ffe9-0000-1000-8000-00805f9b34fb" />
+          <input type="hidden" id="altNotifyUuid" value="0000ffe4-0000-1000-8000-00805f9b34fb" />
+
+          <div class="grid">
+            <div><label>设备名关键字</label><input id="deviceNameFilter" placeholder="Water / YH / 水控 / QZXY，可留空" /></div>
+            <div><label>开闸命令</label>
+              <select id="openCmd">
+                <option value="85:00" selected>85 / 00（默认开始用水）</option>
+                <option value="85:01">85 / 01</option>
+                <option value="85:02">85 / 02</option>
+                <option value="01:00">01 / 00</option>
+                <option value="02:00">02 / 00</option>
+              </select>
+            </div>
+            <div><label>结束命令</label>
+              <select id="stopCmd">
+                <option value="86:00" selected>86 / 00（小程序结束用水）</option>
+                <option value="87:00">87 / 00</option>
+                <option value="02:00">02 / 00</option>
+                <option value="03:00">03 / 00</option>
+              </select>
+            </div>
+            <div><label>关闭命令</label>
+              <select id="closeCmd">
+                <option value="87:00" selected>87 / 00（小程序仅关闭）</option>
+                <option value="86:00">86 / 00</option>
+                <option value="03:00">03 / 00</option>
+                <option value="02:00">02 / 00</option>
+              </select>
+            </div>
+            <div><label>查询命令</label>
+              <select id="queryCmd">
+                <option value="23:00" selected>23 / 00（连接后同步/查询）</option>
+                <option value="23:01">23 / 01</option>
+              </select>
+            </div>
+            <div><label>写特征方式</label>
+              <select id="writeMode">
+                <option value="auto" selected>自动</option>
+                <option value="withResponse">withResponse</option>
+                <option value="withoutResponse">withoutResponse</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="switch"><input id="autoQueryAfterConnect" type="checkbox" checked /><span>连接后自动发 23 查询同步</span></div>
+          <div class="switch"><input id="keepConnected" type="checkbox" checked /><span>开闸后保持连接（推荐）</span></div>
+          <div class="switch"><input id="freeWaterMode" type="checkbox" checked /><span>免费用水模式（不走云余额/rateOrder）</span></div>
+
+          <div class="row">
+            <button class="btn" id="clearBtn">清空日志</button>
+            <button class="btn" id="exportBtn">导出日志</button>
+          </div>
+          <div>
+            <label>调试日志</label>
+            <div id="log" class="log"></div>
+          </div>
+          <p class="small">协议来源：小程序 pages/index 的 buildCmdString / sendCommandAndWait。<br/>
+          帧格式：<code>#60 + LEN(4) + 80 + CMD + 00 + DATA + CS + 16</code>，CS 为 payload 字节和校验。</p>
+          <p class="small">开启（小程序 isFreeWater）：选设备连接 → 23/00 同步 → 85/00 开闸；不走 wallet/rateOrder。</p>
+          <p class="small">关闭（小程序逻辑）：已连接前提下，用水中先 86/00 结束用水，再 87/00 仅关闭；未用水则直接 87/00。</p>
+          <p class="small danger">Web Bluetooth 需要 HTTPS 或 localhost。请用手机 Chrome / Edge 打开。</p>
+        </div>
+      </details>
+    </div>
+  </div>
+  <script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const lastFrames = [];
+  let device = null;
+  let server = null;
+  let writeChar = null;
+  let notifyChar = null;
+  let rxBuffer = "";
+  let pending = null;
+  let isWaterRunning = false;
+  let connecting = false;
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  // ===== 定位日志 / 一次定位错误 =====
+  let currentFlow = "-";
+  let currentStep = "idle";
+  let lastTx = "";
+  let lastRx = "";
+  let lastExpectCmd = "";
+  let lastErrorCode = "";
+  const stepTrail = []; // recent steps for dump
+
+  function now() {
+    return new Date().toLocaleTimeString("zh-CN", { hour12: false });
+  }
+
+  function stamp() {
+    const d = new Date();
+    const pad = (n, w) => String(n).padStart(w || 2, "0");
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + " " +
+      pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds()) + "." + pad(d.getMilliseconds(), 3);
+  }
+
+  function log(msg, level) {
+    level = level || "INFO";
+    const line = "[" + now() + "][" + level + "][" + currentFlow + "/" + currentStep + "] " + msg;
+    lastFrames.push(line);
+    if (lastFrames.length > 800) lastFrames.splice(0, lastFrames.length - 800);
+    const el = $("log");
+    if (el) {
+      el.textContent += line + "\n";
+      el.scrollTop = el.scrollHeight;
+    }
+    if (level === "ERROR") console.error(line);
+    else if (level === "WARN") console.warn(line);
+    else console.log(line);
+  }
+
+  function setFlow(flow) {
+    currentFlow = flow || "-";
+    log("FLOW_START " + currentFlow, "INFO");
+  }
+
+  function step(name, detail) {
+    currentStep = name || "unknown";
+    const msg = detail ? (name + " | " + detail) : name;
+    stepTrail.push({ t: stamp(), flow: currentFlow, step: currentStep, msg: detail || "" });
+    if (stepTrail.length > 40) stepTrail.shift();
+    log("STEP " + msg, "INFO");
+  }
+
+  function setState(text, ok) {
+    const el = $("state");
+    if (!el) return;
+    el.textContent = text;
+    el.className = "status pill" + (ok ? " ok" : "");
+  }
+
+  function setResult(msg) {
+    if ($("resultInfo")) $("resultInfo").textContent = msg || "";
+  }
+
+  function setError(msg) {
+    const el = $("errorInfo");
+    if (!el) return;
+    if (!msg) {
+      el.hidden = true;
+      el.textContent = "";
+      el.style.whiteSpace = "";
+      return;
+    }
+    el.hidden = false;
+    el.style.whiteSpace = "pre-wrap";
+    el.style.textAlign = "left";
+    el.style.maxWidth = "520px";
+    el.style.marginLeft = "auto";
+    el.style.marginRight = "auto";
+    el.textContent = msg;
+  }
+
+  function bleSnapshot() {
+    const gattConnected = !!(device && device.gatt && device.gatt.connected);
+    const writeProp = writeChar && writeChar.properties ? writeChar.properties : null;
+    const notifyProp = notifyChar && notifyChar.properties ? notifyChar.properties : null;
+    return {
+      flow: currentFlow,
+      step: currentStep,
+      browserBT: !!(navigator && navigator.bluetooth),
+      deviceName: device && device.name || "-",
+      deviceId: device && device.id || "-",
+      gattConnected: gattConnected,
+      writeUUID: writeChar && writeChar.uuid || "-",
+      notifyUUID: notifyChar && notifyChar.uuid || "-",
+      writeProp: writeProp ? {
+        write: !!writeProp.write,
+        writeWithoutResponse: !!writeProp.writeWithoutResponse,
+      } : null,
+      notifyProp: notifyProp ? {
+        notify: !!notifyProp.notify,
+        indicate: !!notifyProp.indicate,
+      } : null,
+      isWaterRunning: !!isWaterRunning,
+      pendingCmd: pending && pending.cmd || "-",
+      lastExpectCmd: lastExpectCmd || "-",
+      lastTx: lastTx || "-",
+      lastRx: lastRx || "-",
+      openCmd: ($("openCmd") && $("openCmd").value) || "-",
+      stopCmd: ($("stopCmd") && $("stopCmd").value) || "-",
+      closeCmd: ($("closeCmd") && $("closeCmd").value) || "-",
+      queryCmd: ($("queryCmd") && $("queryCmd").value) || "-",
+      writeMode: ($("writeMode") && $("writeMode").value) || "-",
+      freeWater: !($("freeWaterMode") && !$("freeWaterMode").checked),
+    };
+  }
+
+  function classifyError(e) {
+    const m = String((e && e.message) || e || "未知错误");
+    if (/User cancelled|canceled|NotFoundError/i.test(m)) {
+      return { code: "BT_USER_CANCEL", tip: "你取消了设备选择，或附近没有匹配设备。重新点开启并选择水表。" };
+    }
+    if (/Need permission|Permissions|NotAllowedError/i.test(m)) {
+      return { code: "BT_PERMISSION", tip: "浏览器蓝牙权限被拒绝，请在站点设置里允许蓝牙。" };
+    }
+    if (/Web Bluetooth|bluetooth/i.test(m) && /HTTPS|secure|NotSupported|not supported/i.test(m)) {
+      return { code: "BT_UNSUPPORTED", tip: "当前环境不支持 Web Bluetooth，请用 HTTPS/localhost 的 Chrome/Edge。" };
+    }
+    if (/未找到可写\/可通知|特征值|characteristic/i.test(m)) {
+      return { code: "GATT_CHAR_NOT_FOUND", tip: "找不到写/通知特征。可能设备不对，或 UUID 不匹配。换设备或到高级面板检查 UUID。" };
+    }
+    if (/GATT|NetworkError|disconnect|disconnected/i.test(m)) {
+      return { code: "GATT_LINK", tip: "蓝牙链路断开/异常，请靠近水表后重试。" };
+    }
+    if (/超时|timeout/i.test(m)) {
+      return { code: "CMD_TIMEOUT", tip: "指令发出后设备无匹配回包。检查是否连对表、特征是否正确、水表是否开机。" };
+    }
+    if (/打断/.test(m)) {
+      return { code: "CMD_INTERRUPTED", tip: "上一条指令未完成就被下一条打断。" };
+    }
+    if (/设备拒绝开闸/.test(m)) {
+      return { code: "DEVICE_REJECT", tip: "设备明确拒绝开闸，检查是否免费用水可用，或尝试高级面板切换开闸命令。" };
+    }
+    if (/帧格式|校验|LEN无效|payload长度/.test(m)) {
+      return { code: "FRAME_PARSE", tip: "回包帧解析失败，设备回了非预期数据。" };
+    }
+    if (/未连接写特征|未选择设备|未连接/.test(m)) {
+      return { code: "NOT_READY", tip: "BLE 尚未就绪，请先成功连接设备。" };
+    }
+    return { code: "UNKNOWN", tip: m };
+  }
+
+  function formatDiag(err, extra) {
+    const info = classifyError(err);
+    lastErrorCode = info.code;
+    const snap = bleSnapshot();
+    const ex = extra || {};
+    const lines = [];
+    lines.push("一次定位错误");
+    lines.push("----------------");
+    lines.push("时间: " + stamp());
+    lines.push("错误码: " + info.code);
+    lines.push("流程: " + snap.flow);
+    lines.push("步骤: " + snap.step);
+    lines.push("说明: " + info.tip);
+    lines.push("原始错误: " + String((err && (err.stack || err.message)) || err || "-"));
+    if (ex.cmd) lines.push("命令: " + ex.cmd + (ex.param != null ? ("/" + ex.param) : ""));
+    if (ex.frame) lines.push("发送帧: " + ex.frame);
+    if (ex.expect) lines.push("期望回包CMD: " + ex.expect);
+    lines.push("设备: " + snap.deviceName + " / " + snap.deviceId);
+    lines.push("GATT连接: " + snap.gattConnected);
+    lines.push("写特征: " + snap.writeUUID);
+    lines.push("通知特征: " + snap.notifyUUID);
+    lines.push("写属性: " + JSON.stringify(snap.writeProp));
+    lines.push("通知属性: " + JSON.stringify(snap.notifyProp));
+    lines.push("用水中: " + snap.isWaterRunning);
+    lines.push("最后TX: " + snap.lastTx);
+    lines.push("最后RX: " + snap.lastRx);
+    lines.push("pending/expect: " + snap.pendingCmd + " / " + snap.lastExpectCmd);
+    lines.push("命令配置 open/stop/close/query: " + [snap.openCmd, snap.stopCmd, snap.closeCmd, snap.queryCmd].join(" | "));
+    lines.push("writeMode: " + snap.writeMode + " freeWater: " + snap.freeWater);
+    if (stepTrail.length) {
+      lines.push("最近步骤:");
+      stepTrail.slice(-8).forEach((s, i) => {
+        lines.push("  " + (i + 1) + ". [" + s.t + "] " + s.flow + "/" + s.step + (s.msg ? (" " + s.msg) : ""));
+      });
+    }
+    lines.push("----------------");
+    lines.push("把以上整段日志发我，可直接定位。");
+    return { code: info.code, tip: info.tip, text: lines.join("\n"), snap };
+  }
+
+  function fail(err, extra) {
+    const diag = formatDiag(err, extra || {});
+    log("ERROR_CODE " + diag.code, "ERROR");
+    log("ERROR_TIP " + diag.tip, "ERROR");
+    log("ERROR_RAW " + String((err && (err.stack || err.message)) || err || "-"), "ERROR");
+    if (extra && extra.frame) log("ERROR_FRAME " + extra.frame, "ERROR");
+    if (extra && extra.cmd) log("ERROR_CMD " + extra.cmd + "/" + (extra.param != null ? extra.param : ""), "ERROR");
+    log("SNAPSHOT " + JSON.stringify(diag.snap), "ERROR");
+    // full dump into log for copy
+    String(diag.text).split("\n").forEach((ln) => log(ln, "ERROR"));
+    setError(diag.text);
+    return diag;
+  }
+
+  function explainError(e) {
+    // keep old API, but prefer compact tip; detailed dump goes through fail()
+    return classifyError(e).tip;
+  }
+
+  function forgetRememberedDevice(nameOrId) {
+    const target = String(nameOrId || "").trim();
+    if (!target) return false;
+    const keys = [
+      "qzxy_device_name",
+      "qzxy_device_id",
+      "qzxy_last_mac",
+      "waterctlDeviceName",
+      "waterctlDeviceId",
+    ];
+    let removed = false;
+    for (const k of keys) {
+      const v = localStorage.getItem(k);
+      if (v && (v === target || v.includes(target) || target.includes(v))) {
+        localStorage.removeItem(k);
+        removed = true;
+        log("已删除已保存设备信息 " + k + "=" + v);
+      }
+    }
+    if ($("deviceNameFilter") && ($("deviceNameFilter").value === target || ($("deviceNameFilter").value || "").includes(target))) {
+      $("deviceNameFilter").value = "";
+      removed = true;
+    }
+    return removed;
+  }
+
+  // ===== Mini Program protocol =====
+
+  // buildCmdString(cmd, param) from 小程序 pages/index:
+  // payload = 80 + CMD + 00 + DATA
+  // frame = #60 + LEN(4) + payload + CS + 16
+  // CS = sum(payload bytes) & 0xFF
+  function normHex(s) {
+    return String(s || "").replace(/\s+/g, "").toUpperCase();
+  }
+
+  function sumPayload(hex) {
+    let s = 0;
+    const h = normHex(hex);
+    for (let i = 0; i < h.length; i += 2) s = (s + parseInt(h.substr(i, 2), 16)) & 0xff;
+    return s;
+  }
+
+  function buildCmdString(cmd, param) {
+    const c = normHex(cmd).padStart(2, "0").slice(-2);
+    let payload;
+    if (param === undefined || param === null) {
+      payload = "80" + c + "0000";
+    } else if (String(param) === "") {
+      payload = "80" + c + "00";
+    } else {
+      payload = "80" + c + "00" + normHex(param);
+    }
+    const len = (payload.length / 2).toString(16).padStart(4, "0").toUpperCase();
+    const cs = sumPayload(payload).toString(16).padStart(2, "0").toUpperCase();
+    return ("#60" + len + payload + cs + "16").toUpperCase();
+  }
+
+  function parseFrame(frame) {
+    const f = normHex(frame);
+    if (!f.startsWith("#") || !f.endsWith("16") || f.length < 14) throw new Error("帧格式错误: " + frame);
+    const body = f.slice(1, -2);
+    const head = body.slice(0, 2);
+    const len = parseInt(body.slice(2, 6), 16);
+    if (!Number.isFinite(len)) throw new Error("LEN无效");
+    const payload = body.slice(6, 6 + len * 2);
+    const cs = body.slice(6 + len * 2, 6 + len * 2 + 2);
+    if (payload.length !== len * 2) throw new Error("payload长度不匹配");
+    const calc = sumPayload(payload).toString(16).padStart(2, "0").toUpperCase();
+    const ok = calc === cs.toUpperCase();
+    let cmd = "", data = "";
+    if (payload.startsWith("80") && payload.length >= 4) {
+      cmd = payload.slice(2, 4);
+      data = payload.slice(4);
+    }
+    return { raw: f, head, len, payload, cs, ok, cmd, data };
+  }
+
+  function parseCmdPair(selValue) {
+    const [cmd, param] = String(selValue || "85:00").split(":");
+    return { cmd: cmd || "85", param: param == null ? "00" : param };
+  }
+
+  function ab2str(buf) {
+    const u8 = new Uint8Array(buf);
+    let s = "";
+    for (let i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]);
+    return s;
+  }
+
+  function str2ab(str) {
+    const u8 = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) u8[i] = str.charCodeAt(i) & 0xff;
+    return u8.buffer;
+  }
+
+  function updateDeviceCard() {
+    const card = $("deviceCard");
+    if (!device) {
+      if (card) card.hidden = true;
+      if ($("deviceInfo")) $("deviceInfo").textContent = "未连接";
+      if ($("macInfo")) $("macInfo").textContent = "-";
+      return;
+    }
+    if (card) card.hidden = false;
+    if ($("deviceTitle")) $("deviceTitle").textContent = device.name || "未命名设备";
+    if ($("deviceMeta")) $("deviceMeta").textContent = "id: " + device.id + (writeChar ? " · 已就绪" : " · 未就绪");
+    if ($("deviceInfo")) $("deviceInfo").textContent = (device.name || "device") + " / " + device.id;
+    if ($("macInfo")) $("macInfo").textContent = localStorage.getItem("qzxy_last_mac") || device.id;
+  }
+
+  function setRunning(running) {
+    isWaterRunning = !!running;
+    if ($("runBtn")) {
+      $("runBtn").textContent = isWaterRunning ? "用水中..." : "开启";
+      // keep clickable so user can reopen if needed; only disable while command in-flight elsewhere
+      $("runBtn").disabled = false;
+    }
+    if ($("startBtn")) {
+      $("startBtn").textContent = isWaterRunning ? "用水中..." : "开始用水";
+      $("startBtn").disabled = isWaterRunning;
+    }
+    if ($("closeMainBtn")) {
+      $("closeMainBtn").textContent = "关闭";
+      $("closeMainBtn").disabled = false;
+    }
+  }
+
+  function onNotify(ev) {
+    try {
+      const chunk = ab2str(ev.target.value.buffer);
+      rxBuffer += chunk;
+      let idx;
+      while ((idx = rxBuffer.indexOf("16")) >= 0) {
+        const end = idx + 2;
+        const start = rxBuffer.lastIndexOf("#", end - 1);
+        if (start < 0) {
+          rxBuffer = rxBuffer.slice(end);
+          continue;
+        }
+        const frame = rxBuffer.slice(start, end);
+        rxBuffer = rxBuffer.slice(end);
+        handleFrame(frame);
+      }
+      if (rxBuffer.length > 512) rxBuffer = rxBuffer.slice(-256);
+    } catch (e) {
+      log("notify parse error: " + e.message);
+    }
+  }
+
+  function handleFrame(frame) {
+    lastRx = frame;
+    log("RX " + frame);
+    if ($("lastRxInfo")) $("lastRxInfo").textContent = frame;
+    let parsed;
+    try {
+      parsed = parseFrame(frame);
+    } catch (e) {
+      log("坏帧: " + e.message);
+      return;
+    }
+    if (!parsed.ok) log("WARN 校验不匹配 cs=" + parsed.cs + " payload=" + parsed.payload);
+    if (pending && parsed.cmd && pending.cmd.toUpperCase() === parsed.cmd.toUpperCase()) {
+      const p = pending;
+      pending = null;
+      clearTimeout(p.timer);
+      p.resolve(parsed);
+    }
+  }
+
+  async function pickDevice() {
+    const filterName = (($("deviceNameFilter") && $("deviceNameFilter").value) || "").trim();
+    const options = {
+      acceptAllDevices: true,
+      optionalServices: [
+        $("serviceUuid").value.trim(),
+        $("writeUuid").value.trim(),
+        $("notifyUuid").value.trim(),
+        $("altServiceUuid").value.trim(),
+        $("altWriteUuid").value.trim(),
+        $("altNotifyUuid").value.trim(),
+        "0000ff00-0000-1000-8000-00805f9b34fb",
+        "0000ff01-0000-1000-8000-00805f9b34fb",
+        "0000ff02-0000-1000-8000-00805f9b34fb",
+        "0000ffe0-0000-1000-8000-00805f9b34fb",
+        "0000ffe4-0000-1000-8000-00805f9b34fb",
+        "0000ffe5-0000-1000-8000-00805f9b34fb",
+        "0000ffe9-0000-1000-8000-00805f9b34fb",
+      ],
+    };
+    if (filterName) log("设备名关键字: " + filterName + "（请在系统弹窗中选择对应水表）");
+    const dev = await navigator.bluetooth.requestDevice(options);
+    if (dev.name && String(dev.name).includes("YH2506193648")) {
+      log("忽略保存已删除设备: " + dev.name);
+      return dev;
+    }
+    localStorage.setItem("qzxy_device_id", dev.id);
+    if (dev.name) localStorage.setItem("qzxy_device_name", dev.name);
+    return dev;
+  }
+
+  async function getKnownDevice() {
+    if (!navigator.bluetooth.getDevices) return null;
+    const list = await navigator.bluetooth.getDevices();
+    if (!list || !list.length) return null;
+    const blocked = "YH2506193648";
+    const usable = list.filter((d) => {
+      const n = String(d.name || "");
+      return n !== blocked && !n.includes(blocked);
+    });
+    if (!usable.length) return null;
+    const lastId = localStorage.getItem("qzxy_device_id");
+    if (lastId) {
+      const hit = usable.find((d) => d.id === lastId);
+      if (hit) return hit;
+    }
+    return usable[0];
+  }
+
+  async function findWriteNotify(server) {
+    const preferred = [
+      { service: $("serviceUuid").value.trim(), write: $("writeUuid").value.trim(), notify: $("notifyUuid").value.trim() },
+      { service: $("altServiceUuid").value.trim(), write: $("altWriteUuid").value.trim(), notify: $("altNotifyUuid").value.trim() },
+      { service: "0000ff00-0000-1000-8000-00805f9b34fb", write: "0000ff01-0000-1000-8000-00805f9b34fb", notify: "0000ff02-0000-1000-8000-00805f9b34fb" },
+      { service: "0000ffe5-0000-1000-8000-00805f9b34fb", write: "0000ffe9-0000-1000-8000-00805f9b34fb", notify: "0000ffe4-0000-1000-8000-00805f9b34fb" },
+      { service: "0000ffe0-0000-1000-8000-00805f9b34fb", write: "0000ffe9-0000-1000-8000-00805f9b34fb", notify: "0000ffe4-0000-1000-8000-00805f9b34fb" },
+    ];
+
+    for (const p of preferred) {
+      try {
+        const svc = await server.getPrimaryService(p.service);
+        const w = await svc.getCharacteristic(p.write);
+        let n = null;
+        try { n = await svc.getCharacteristic(p.notify); } catch (_) {}
+        if (!n) {
+          for (const p2 of preferred) {
+            try {
+              const svc2 = await server.getPrimaryService(p2.service);
+              n = await svc2.getCharacteristic(p2.notify);
+              if (n) break;
+            } catch (_) {}
+          }
+        }
+        if (w && n) {
+          log("使用特征 service=" + p.service + " write=" + p.write + " notify=" + (n.uuid || p.notify));
+          return { writeChar: w, notifyChar: n, serviceUuid: p.service };
+        }
+      } catch (_) {}
+    }
+
+    const services = await server.getPrimaryServices();
+    let w = null, n = null, sid = "";
+    for (const svc of services) {
+      let chars = [];
+      try { chars = await svc.getCharacteristics(); } catch (_) { continue; }
+      for (const c of chars) {
+        const prop = c.properties || {};
+        if (!w && (prop.write || prop.writeWithoutResponse)) { w = c; sid = svc.uuid; }
+        if (!n && (prop.notify || prop.indicate)) n = c;
+      }
+    }
+    if (!w || !n) throw new Error("未找到可写/可通知特征值，请确认水表已开机且支持该协议");
+    log("回退扫描特征 write=" + w.uuid + " notify=" + n.uuid + " service=" + sid);
+    return { writeChar: w, notifyChar: n, serviceUuid: sid };
+  }
+
+  async function disconnect() {
+    try {
+      if (notifyChar) {
+        try { notifyChar.removeEventListener("characteristicvaluechanged", onNotify); } catch (_) {}
+        try { await notifyChar.stopNotifications(); } catch (_) {}
+      }
+    } catch (_) {}
+    try {
+      if (device && device.gatt && device.gatt.connected) device.gatt.disconnect();
+    } catch (_) {}
+    writeChar = null;
+    notifyChar = null;
+    server = null;
+    rxBuffer = "";
+    if (pending) {
+      clearTimeout(pending.timer);
+      pending.reject(new Error("已断开"));
+      pending = null;
+    }
+    setRunning(false);
+    setState("未连接");
+    updateDeviceCard();
+  }
+
+  async function connectBle(forcePick = false) {
+    if (connecting) {
+      log("connectBle ignored: already connecting", "WARN");
+      return;
+    }
+    connecting = true;
+    try {
+      step("bt_check", "forcePick=" + !!forcePick);
+      if (!navigator.bluetooth) throw Object.assign(new Error("需要支持蓝牙的浏览器，如 Chrome 或 Edge。"), { code: "BT_UNSUPPORTED" });
+      setError("");
+      setResult(forcePick ? "选择设备中..." : "连接中...");
+      setState("连接中...");
+
+      if (forcePick) {
+        step("disconnect_before_pick");
+        await disconnect();
+        step("requestDevice");
+        device = await pickDevice();
+      } else if (!device) {
+        step("getKnownDevice");
+        device = await getKnownDevice();
+        if (!device) {
+          step("requestDevice_fallback");
+          device = await pickDevice();
+        }
+      }
+
+      if (!device) throw Object.assign(new Error("未选择设备"), { code: "NOT_READY" });
+      step("device_selected", (device.name || "-") + " / " + device.id);
+      if (device.addEventListener) {
+        device.addEventListener("gattserverdisconnected", () => {
+          log("设备断开 name=" + (device && device.name || "-") + " id=" + (device && device.id || "-"), "WARN");
+          setState("已断开");
+          setRunning(false);
+          writeChar = null;
+          notifyChar = null;
+          updateDeviceCard();
+        });
+      }
+
+      step("gatt_connect");
+      server = await device.gatt.connect();
+      step("find_write_notify");
+      const found = await findWriteNotify(server);
+      writeChar = found.writeChar;
+      notifyChar = found.notifyChar;
+      step("start_notifications", "write=" + (writeChar && writeChar.uuid) + " notify=" + (notifyChar && notifyChar.uuid));
+      await notifyChar.startNotifications();
+      notifyChar.addEventListener("characteristicvaluechanged", onNotify);
+
+      if (!(device.name && String(device.name).includes("YH2506193648"))) {
+        localStorage.setItem("qzxy_device_id", device.id);
+        if (device.name) localStorage.setItem("qzxy_device_name", device.name);
+      } else {
+        log("忽略保存已删除设备: " + device.name, "WARN");
+        forgetRememberedDevice("YH2506193648");
+      }
+      updateDeviceCard();
+      setState("已连接 " + (device.name || device.id), true);
+      setResult("已连接，可开始用水");
+      log("连接成功 " + (device.name || "") + " " + device.id + " write=" + writeChar.uuid + " notify=" + notifyChar.uuid);
+
+      if ($("autoQueryAfterConnect") && $("autoQueryAfterConnect").checked) {
+        try {
+          const q = parseCmdPair(($("queryCmd") && $("queryCmd").value) || "23:00");
+          step("sync_23", "frame=" + buildCmdString(q.cmd, q.param));
+          const resp = await sendCommandAndWait(q.cmd, q.param, 8000);
+          log("连接同步OK cmd=" + resp.cmd + " data=" + resp.data);
+          setResult("连接同步成功，可开始用水");
+        } catch (e) {
+          // 同步失败不阻断开闸，但留下可定位日志
+          log("连接同步失败，可继续尝试开闸: " + e.message, "WARN");
+          log("SYNC_WARN_SNAPSHOT " + JSON.stringify(bleSnapshot()), "WARN");
+          setResult("已连接（同步未完成，仍可尝试开始用水）");
+        }
+      }
+    } catch (e) {
+      fail(e, { stage: "connectBle" });
+      throw e;
+    } finally {
+      connecting = false;
+    }
+  }
+
+  async function writeFrame(frame) {
+    if (!writeChar) throw new Error("未连接写特征");
+    lastTx = frame;
+    if ($("lastCmdInfo")) $("lastCmdInfo").textContent = frame;
+    log("TX " + frame);
+    const buf = str2ab(frame);
+    const mode = ($("writeMode") && $("writeMode").value) || "auto";
+    const prop = writeChar.properties || {};
+    if (mode === "withoutResponse" || (mode === "auto" && prop.writeWithoutResponse && !prop.write)) {
+      await writeChar.writeValueWithoutResponse(buf);
+    } else if (mode === "withResponse" || prop.write) {
+      if (writeChar.writeValueWithResponse) await writeChar.writeValueWithResponse(buf);
+      else await writeChar.writeValue(buf);
+    } else if (prop.writeWithoutResponse) {
+      await writeChar.writeValueWithoutResponse(buf);
+    } else {
+      await writeChar.writeValue(buf);
+    }
+  }
+
+  async function sendInChunks(frame) {
+    const s = String(frame);
+    const chunkSize = 20;
+    if (s.length <= chunkSize) {
+      await writeFrame(s);
+      return;
+    }
+    for (let i = 0; i < s.length; i += chunkSize) {
+      await writeFrame(s.slice(i, i + chunkSize));
+      await sleep(20);
+    }
+  }
+
+  function sendCommandAndWait(cmd, param, timeoutMs) {
+    timeoutMs = timeoutMs || 10000;
+    return new Promise(async (resolve, reject) => {
+      const frame = buildCmdString(cmd, param);
+      const expect = normHex(cmd).padStart(2, "0").slice(-2);
+      lastExpectCmd = expect;
+      lastTx = frame;
+      const startedAt = Date.now();
+      try {
+        if (pending) {
+          clearTimeout(pending.timer);
+          const old = pending;
+          pending = null;
+          old.reject(Object.assign(new Error("打断"), {
+            code: "CMD_INTERRUPTED",
+            prevCmd: old.cmd,
+            nextCmd: expect,
+            nextFrame: frame,
+          }));
+        }
+        step("sendCommand", "cmd=" + expect + " param=" + (param == null ? "" : param) + " frame=" + frame + " timeout=" + timeoutMs);
+        pending = {
+          cmd: expect,
+          frame: frame,
+          resolve: (parsed) => {
+            const cost = Date.now() - startedAt;
+            log("CMD_OK cmd=" + expect + " costMs=" + cost + " rx=" + (parsed && parsed.raw || "-") + " data=" + (parsed && parsed.data || "-"));
+            resolve(parsed);
+          },
+          reject,
+          timer: setTimeout(() => {
+            if (pending) {
+              const p = pending;
+              pending = null;
+              const err = Object.assign(new Error("等待指令 " + expect + " 回包超时"), {
+                code: "CMD_TIMEOUT",
+                cmd: expect,
+                param: param,
+                frame: frame,
+                timeoutMs: timeoutMs,
+                lastRx: lastRx,
+                costMs: Date.now() - startedAt,
+              });
+              reject(err);
+            }
+          }, timeoutMs),
+        };
+        await sendInChunks(frame);
+      } catch (e) {
+        if (pending) {
+          clearTimeout(pending.timer);
+          pending = null;
+        }
+        e.cmd = expect;
+        e.param = param;
+        e.frame = frame;
+        reject(e);
+      }
+    });
+  }
+
+  // ===== Mini Program free-water flows =====
+  // One-button UX: 选择设备 -> 连接同步 -> 直接开闸
+  async function runOneClickOpen() {
+    if ($("runBtn")) $("runBtn").disabled = true;
+    setFlow("OPEN");
+    let openMeta = null;
+    try {
+      setError("");
+      setResult("选择设备...");
+      setState("选择设备...");
+      step("open_begin");
+
+      // always let user choose device on click, then open immediately
+      await connectBle(true);
+      step("open_connected", (device && device.name) || "-");
+
+      setResult("免费用水开闸中...");
+      setState("开闸中...");
+
+      // open gate with free-water command (default 85/00)
+      try {
+        const q = parseCmdPair(($("queryCmd") && $("queryCmd").value) || "23:00");
+        step("open_pre_query", "cmd=" + q.cmd + "/" + q.param);
+        await sendCommandAndWait(q.cmd, q.param, 6000);
+      } catch (e) {
+        log("开闸前查询失败，继续开闸: " + e.message, "WARN");
+      }
+
+      // 小程序免费用水：不走 wallet / rateOrder，直接 sendCommandAndWait(开闸cmd)
+      // 默认 openCmd=85/00 => #600004808500000516
+      const open = parseCmdPair(($("openCmd") && $("openCmd").value) || "85:00");
+      openMeta = { cmd: open.cmd, param: open.param, frame: buildCmdString(open.cmd, open.param) };
+      step("open_send_85", "frame=" + openMeta.frame);
+      log("小程序开始用水(免费) sendCommand(" + open.cmd + "," + open.param + ") frame=" + openMeta.frame);
+      const resp = await sendCommandAndWait(open.cmd, open.param, 12000);
+      log("开闸回包 cmd=" + resp.cmd + " data=" + resp.data + " ok=" + resp.ok + " raw=" + resp.raw);
+
+      const data = normHex(resp.data || "");
+      if (/01$/.test(data) && data.replace(/0/g, "") === "1") {
+        throw Object.assign(new Error("设备拒绝开闸 data=" + data), {
+          code: "DEVICE_REJECT",
+          cmd: open.cmd,
+          param: open.param,
+          frame: openMeta.frame,
+          rx: resp.raw,
+        });
+      }
+
+      step("open_success");
+      setRunning(true);
+      setState("已开启", true);
+      setResult("已开启 · 请立即开龙头");
+      if ($("modeInfo")) $("modeInfo").textContent = "免费用水 · 已开闸";
+    } catch (e) {
+      const diag = fail(e, openMeta || { stage: "OPEN" });
+      setResult("开启失败 [" + diag.code + "]");
+      setState("失败");
+      setRunning(false);
+      try { await disconnect(); } catch (_) {}
+    } finally {
+      if ($("runBtn") && !isWaterRunning) $("runBtn").disabled = false;
+      currentStep = "idle";
+    }
+  }
+
+  async function searchWater(forcePick) {
+    $("searchBtn").disabled = true;
+    try {
+      setError("");
+      setResult("搜索/连接中...");
+      await connectBle(!!forcePick);
+      setResult("搜索用水完成，已连接设备");
+    } catch (e) {
+      log("SEARCH ERROR " + (e.stack || e.message || e));
+      setError(explainError(e));
+      setResult("搜索用水失败");
+      setState("失败");
+    } finally {
+      $("searchBtn").disabled = false;
+    }
+  }
+
+  async function startWaterFree() {
+    $("startBtn").disabled = true;
+    try {
+      if ($("freeWaterMode") && !$("freeWaterMode").checked) {
+        throw new Error("当前未勾选免费用水模式");
+      }
+      setError("");
+      setResult("免费用水开闸中...");
+      setState("开闸中...");
+
+      if (!writeChar || !device || !(device.gatt && device.gatt.connected)) {
+        await connectBle(false);
+      }
+
+      try {
+        const q = parseCmdPair($("queryCmd").value);
+        await sendCommandAndWait(q.cmd, q.param, 6000);
+      } catch (e) {
+        log("开闸前查询失败，继续开闸: " + e.message);
+      }
+
+      const open = parseCmdPair($("openCmd").value);
+      log("免费用水开闸 sendCommand(" + open.cmd + "," + open.param + ")");
+      const resp = await sendCommandAndWait(open.cmd, open.param, 12000);
+      log("开闸回包 cmd=" + resp.cmd + " data=" + resp.data + " ok=" + resp.ok);
+
+      const data = normHex(resp.data || "");
+      if (/01$/.test(data) && data.replace(/0/g, "") === "1") {
+        throw new Error("设备拒绝开闸 data=" + data);
+      }
+
+      setRunning(true);
+      setState("用水中", true);
+      setResult("免费用水已开闸 · 请立即开龙头");
+      if ($("modeInfo")) $("modeInfo").textContent = "免费用水 · 已开闸";
+      if ($("keepConnected") && !$("keepConnected").checked) {
+        log("保持连接关闭：即将断开（可能影响持续出水）");
+      }
+    } catch (e) {
+      log("START ERROR " + (e.stack || e.message || e));
+      setError(explainError(e));
+      setResult("开闸失败");
+      setState("失败");
+      setRunning(false);
+    } finally {
+      if (!isWaterRunning) $("startBtn").disabled = false;
+    }
+  }
+
+  async function stopWater() {
+    $("stopBtn").disabled = true;
+    try {
+      setError("");
+      setResult("结束用水中...");
+      if (!writeChar || !device || !(device.gatt && device.gatt.connected)) {
+        await connectBle(false);
+      }
+      const stop = parseCmdPair($("stopCmd").value);
+      log("小程序结束用水 sendCommand(" + stop.cmd + "," + stop.param + ")");
+      const resp = await sendCommandAndWait(stop.cmd, stop.param, 10000);
+      log("结束回包 cmd=" + resp.cmd + " data=" + resp.data);
+      setRunning(false);
+      setState("已连接 " + ((device && device.name) || ""), true);
+      setResult("已结束用水");
+      if ($("modeInfo")) $("modeInfo").textContent = "免费用水 · 已结束";
+    } catch (e) {
+      log("STOP ERROR " + (e.stack || e.message || e));
+      setError(explainError(e));
+      setResult("结束失败");
+    } finally {
+      $("stopBtn").disabled = false;
+      $("startBtn").disabled = false;
+    }
+  }
+
+  // 小程序关闭逻辑：
+  // - 结束用水: handleWaterAction(isWaterRunning=true) ≈ stopCmd(默认 86/00)
+  // - 仅关闭: handleOnlyClose ≈ closeCmd(默认 87/00)
+  // 一键关闭时按完整收尾：先结束用水（若可能）再仅关闭
+  async function runOneClickClose() {
+    if ($("closeMainBtn")) $("closeMainBtn").disabled = true;
+    if ($("runBtn")) $("runBtn").disabled = true;
+    setFlow("CLOSE");
+    let closeMeta = null;
+    try {
+      setError("");
+      setResult("关闭中...");
+      setState("关闭中...");
+      step("close_begin", "isWaterRunning=" + isWaterRunning);
+
+      // 小程序关闭前必须已连接（onlyClose / 结束用水 都依赖 BLE）
+      if (!writeChar || !device || !(device.gatt && device.gatt.connected)) {
+        setResult("连接设备以关闭...");
+        try {
+          step("close_reconnect_auto");
+          await connectBle(false);
+        } catch (e) {
+          log("自动重连失败，改为手动选择: " + e.message, "WARN");
+          step("close_reconnect_manual");
+          await connectBle(true);
+        }
+      }
+
+      // 小程序逻辑拆分：
+      // 1) 用水中点主按钮=结束用水 -> stopCmd(默认 86/00)
+      // 2) 仅关闭按钮 handleOnlyClose -> closeCmd(默认 87/00)
+      if (isWaterRunning) {
+        const stop = parseCmdPair(($("stopCmd") && $("stopCmd").value) || "86:00");
+        const stopFrame = buildCmdString(stop.cmd, stop.param);
+        step("close_stop_86", "frame=" + stopFrame);
+        log("小程序结束用水 sendCommand(" + stop.cmd + "," + stop.param + ") frame=" + stopFrame);
+        const stopResp = await sendCommandAndWait(stop.cmd, stop.param, 10000);
+        log("结束用水回包 cmd=" + stopResp.cmd + " data=" + stopResp.data + " ok=" + stopResp.ok + " raw=" + stopResp.raw);
+        setRunning(false);
+      } else {
+        log("当前非用水中，跳过结束用水，直接仅关闭（handleOnlyClose）");
+        step("close_skip_stop");
+      }
+
+      const close = parseCmdPair(($("closeCmd") && $("closeCmd").value) || "87:00");
+      closeMeta = { cmd: close.cmd, param: close.param, frame: buildCmdString(close.cmd, close.param) };
+      step("close_only_87", "frame=" + closeMeta.frame);
+      log("小程序仅关闭 sendCommand(" + close.cmd + "," + close.param + ") frame=" + closeMeta.frame);
+      const closeResp = await sendCommandAndWait(close.cmd, close.param, 10000);
+      log("仅关闭回包 cmd=" + closeResp.cmd + " data=" + closeResp.data + " ok=" + closeResp.ok + " raw=" + closeResp.raw);
+
+      step("close_success");
+      setRunning(false);
+      setState("已关闭", true);
+      setResult("关闭完成 · 阀门已关闭");
+      if ($("modeInfo")) $("modeInfo").textContent = "免费用水 · 已关闭";
+    } catch (e) {
+      const diag = fail(e, closeMeta || { stage: "CLOSE" });
+      setResult("关闭失败 [" + diag.code + "]");
+      setState("失败");
+    } finally {
+      if ($("closeMainBtn")) $("closeMainBtn").disabled = false;
+      if ($("runBtn")) $("runBtn").disabled = false;
+      currentStep = "idle";
+    }
+  }
+
+  async function onlyClose() {
+    $("closeBtn").disabled = true;
+    try {
+      setError("");
+      setResult("发送关闭中...");
+      if (!writeChar || !device || !(device.gatt && device.gatt.connected)) {
+        await connectBle(false);
+      }
+      const c = parseCmdPair($("closeCmd").value);
+      log("小程序仅关闭 sendCommand(" + c.cmd + "," + c.param + ")");
+      const resp = await sendCommandAndWait(c.cmd, c.param, 10000);
+      log("关闭回包 cmd=" + resp.cmd + " data=" + resp.data);
+      setRunning(false);
+      setResult("关闭命令已发送");
+      setState("已连接 " + ((device && device.name) || ""), true);
+    } catch (e) {
+      log("CLOSE ERROR " + (e.stack || e.message || e));
+      setError(explainError(e));
+      setResult("关闭失败");
+    } finally {
+      $("closeBtn").disabled = false;
+    }
+  }
+
+  async function queryStatus() {
+    $("queryBtn").disabled = true;
+    try {
+      setError("");
+      setResult("查询中...");
+      if (!writeChar || !device || !(device.gatt && device.gatt.connected)) {
+        await connectBle(false);
+      }
+      const q = parseCmdPair($("queryCmd").value);
+      const resp = await sendCommandAndWait(q.cmd, q.param, 8000);
+      setResult("查询成功 cmd=" + resp.cmd + " data=" + resp.data);
+      log("查询成功 " + resp.raw);
+      setState("已连接 " + ((device && device.name) || ""), true);
+    } catch (e) {
+      log("QUERY ERROR " + (e.stack || e.message || e));
+      setError(explainError(e));
+      setResult("查询失败");
+    } finally {
+      $("queryBtn").disabled = false;
+    }
+  }
+
+  function setBluetoothSupportUi() {
+    const bt = !!(navigator && navigator.bluetooth);
+    if (bt) {
+      $("support").textContent = "Web Bluetooth 可用";
+      $("support").className = "support pill ok";
+      $("unsupportedBox").hidden = true;
+      if ($("runBtn")) $("runBtn").disabled = false;
+      if ($("closeMainBtn")) $("closeMainBtn").disabled = false;
+      if ($("searchBtn")) $("searchBtn").disabled = false;
+      if ($("startBtn")) $("startBtn").disabled = false;
+      return true;
+    }
+    $("support").textContent = "不支持的浏览器";
+    $("support").className = "support pill warn";
+    $("unsupportedBox").hidden = false;
+    if ($("runBtn")) $("runBtn").disabled = true;
+    if ($("closeMainBtn")) $("closeMainBtn").disabled = true;
+    if ($("searchBtn")) $("searchBtn").disabled = true;
+    if ($("startBtn")) $("startBtn").disabled = true;
+    if ($("stopBtn")) $("stopBtn").disabled = true;
+    if ($("queryBtn")) $("queryBtn").disabled = true;
+    if ($("closeBtn")) $("closeBtn").disabled = true;
+    setResult("需要支持蓝牙的浏览器，如 Chrome 或 Edge。");
+    return false;
+  }
+
+  function initUi() {
+    setBluetoothSupportUi();
+    // 删除指定已保存设备，避免自动连到 YH2506193648
+    forgetRememberedDevice("YH2506193648");
+    // 不再把完整设备名自动填进过滤框（一键开启会弹系统选择器）
+    if ($("deviceNameFilter")) {
+      const cur = ($("deviceNameFilter").value || "").trim();
+      if (cur === "YH2506193648" || cur.includes("YH2506193648")) $("deviceNameFilter").value = "";
+    }
+    if ($("freeWaterMode")) $("freeWaterMode").checked = true;
+    if ($("modeInfo")) $("modeInfo").textContent = "免费用水（小程序 isFreeWater）";
+    setRunning(false);
+    setResult("点击开启选设备开闸");
+    updateDeviceCard();
+
+    const samples = [
+      ["23", "00", "#60000480230000A316"],
+      ["85", "00", "#600004808500000516"],
+      ["85", "01", "#600004808500010616"],
+      ["01", "00", "#600004800100008116"],
+      ["86", "00", "#600004808600000616"],
+      ["87", "00", "#600004808700000716"],
+    ];
+    let pass = 0;
+    for (const [c, p, f] of samples) {
+      const got = buildCmdString(c, p);
+      if (got === f) pass++;
+      else log("协议自检失败 " + c + "/" + p + " got=" + got + " expect=" + f);
+    }
+    log("协议自检 " + pass + "/" + samples.length + " 通过（小程序 buildCmdString）");
+    log("定位日志已启用：出错时会输出错误码/步骤/TX/RX/特征/最近步骤");
+
+    if ($("runBtn")) $("runBtn").onclick = () => runOneClickOpen();
+    if ($("closeMainBtn")) $("closeMainBtn").onclick = () => runOneClickClose();
+    if ($("searchBtn")) $("searchBtn").onclick = () => searchWater(false);
+    if ($("pairBtn")) $("pairBtn").onclick = () => searchWater(true);
+    if ($("startBtn")) $("startBtn").onclick = () => startWaterFree();
+    if ($("stopBtn")) $("stopBtn").onclick = () => stopWater();
+    if ($("closeBtn")) $("closeBtn").onclick = () => onlyClose();
+    if ($("queryBtn")) $("queryBtn").onclick = () => queryStatus();
+    if ($("disconnectBtn")) $("disconnectBtn").onclick = async () => {
+      await disconnect();
+      setResult("已断开");
+    };
+    $("clearBtn").onclick = () => {
+      $("log").textContent = "";
+      lastFrames.length = 0;
+    };
+    $("exportBtn").onclick = () => {
+      const header = [
+        "==== QZXY DIAG EXPORT ====",
+        "time=" + stamp(),
+        "snapshot=" + JSON.stringify(bleSnapshot()),
+        "lastErrorCode=" + (lastErrorCode || "-"),
+        "==========================",
+        "",
+      ].join("\n");
+      const blob = new Blob([header + lastFrames.join("\n")], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "qzxy-freewater-log.txt";
+      a.click();
+    };
+    if ($("freeWaterMode")) {
+      $("freeWaterMode").onchange = () => {
+        const free = $("freeWaterMode").checked;
+        $("modeInfo").textContent = free
+          ? "免费用水（小程序 isFreeWater）"
+          : "本地开闸（本页不走云计费）";
+        $("modeTag").textContent = free
+          ? "免费用水模式 · 小程序同款开闸协议"
+          : "本地开闸模式";
+      };
+    }
+  }
+
+  initUi();
+})();
+
+  </script>
+</body>
+</html>
