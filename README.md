@@ -1,6 +1,6 @@
 # 🛀 蓝牙水控 bleworker
 
-深圳市常工电子“蓝牙水控器”控制程序的本地 Web 实现，面向国内高校宿舍热水器。  
+趣智校园“蓝牙水控器”控制程序的本地 Web 实现，面向国内高校宿舍热水器。  
 基于小程序 `pages/index` 的 `buildCmdString` / `sendCommandAndWait` 协议逆向还原，支持**免费用水（isFreeWater）**一键开闸。
 
 本项目参考 [celesWuff/waterctl](https://github.com/celesWuff/waterctl) 的使用体验与文档结构，面向浏览器 Web Bluetooth 场景提供单页离线可用的控制界面。
